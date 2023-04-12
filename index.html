@@ -2,15 +2,43 @@
 <html>
 <head>
   <title>Zomboid Encrypt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4132214478185297"
      crossorigin="anonymous"></script>
+  <style>
+    /* Add styles for mobile optimization here */
+    body {
+      font-size: 16px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    textarea {
+      width: 100%;
+      resize: vertical;
+      margin-bottom: 10px;
+    }
+
+    button {
+      width: 100%;
+      height: 44px;
+      margin-bottom: 10px;
+    }
+
+    #result {
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
   <h1>Zomboid Encrypt</h1>
-  <p>place multiple data separated with comma (,)</p>
+  <p>Place multiple data separated with comma (,)</p>
   <textarea id="input" rows="5" cols="30"></textarea>
   <br>
-  <button style="height:44px" onclick="encrypt()">Encrypt</button>
+  <button onclick="encrypt()">Encrypt</button>
   <div id="result"></div>
   <script>
     function encrypt(event) {
