@@ -1,51 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Send Data to AWS Lambda</title>
-    <script>
-        function sendData() {
-            // Get user input from text area
-            const userInput = document.getElementById("inputData").value;
-
-            // Convert user input to an array, splitting by comma
-            const dataArray = userInput.split(",");
-
-            // Create JSON object with dataArray as property
-            const data = {
-                dataArray: dataArray
-            };
-
-            // Convert data object to JSON string
-            const jsonData = JSON.stringify(data);
-
-            // Create XMLHttpRequest object
-            const xhr = new XMLHttpRequest();
-
-            // Configure request
-            xhr.open("POST", "https://lfrhwwjy1c.execute-api.sa-east-1.amazonaws.com/default/zomboid-encrypt", true);
-            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
-            // Send request with JSON data as body
-            xhr.send(jsonData);
-
-            // Handle response
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        // Request successful
-                        console.log("Request successful", xhr.responseText);
-                    } else {
-                        // Request failed
-                        console.error("Request failed", xhr.responseText);
-                    }
-                }
-            };
-        }
-    </script>
+  <title>Zomboid Encrypt</title>
 </head>
 <body>
-    <h1>Send Data to AWS Lambda</h1>
-    <textarea id="inputData" rows="5" cols="30"></textarea><br>
-    <button onclick="sendData()">Send Data</button>
+  <h1>Zomboid Encrypt</h1>
+  <form onsubmit="submitForm(event)">
+    <label for="input">Input:</label>
+    <input type="text" id="input" />
+    <button type="submit">Encrypt</button>
+  </form>
+  <script>
+    function submitForm(event) {
+      event.preventDefault();
+      const input = document.getElementById("input").value;
+      const dataArray = input.split(",").map(item => item.trim());
+      const requestData = JSON.stringify({ dataArray });
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "https://lfrhwwjy1c.execute-api.sa-east-1.amazonaws.com/default/zomboid-encrypt");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("Access-Control-Allow-Origin", "https://rslgp.github.io"); // Replace with your domain
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            console.log("Encrypted Data:", response);
+            // Update UI with encrypted data
+          } else {
+            console.error("Failed to encrypt data:", xhr.responseText);
+            // Handle error
+          }
+        }
+      };
+      xhr.send(requestData);
+    }
+  </script>
 </body>
 </html>
