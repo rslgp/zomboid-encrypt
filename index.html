@@ -5,15 +5,12 @@
 </head>
 <body>
   <h1>Zomboid Encrypt</h1>
-  <form onsubmit="submitForm(event)">
-    <label for="input">Input:</label>
-    <input type="text" id="input" />
-    <button type="submit">Encrypt</button>
-  </form>
+  <textarea id="input" rows="5" cols="30"></textarea>
+  <br>
+  <button style="height:44px;width:44px" onclick="encrypt()">Encrypt</button>
   <div id="result"></div>
   <script>
-    function submitForm(event) {
-      event.preventDefault();
+    function encrypt(event) {
       const input = document.getElementById("input").value;
       const dataArray = input.split(",").map(item => item.trim());
       const requestData = JSON.stringify({ dataArray });
