@@ -19,7 +19,7 @@
       const requestData = JSON.stringify({ dataArray });
 
       const xhr = new XMLHttpRequest();
-      xhr.open("GET", "https://lfrhwwjy1c.execute-api.sa-east-1.amazonaws.com/default/zomboid-encrypt");
+      xhr.open("POST", "https://lfrhwwjy1c.execute-api.sa-east-1.amazonaws.com/default/zomboid-encrypt");
       xhr.setRequestHeader("Content-Type", "application/json");
       xhr.setRequestHeader("Access-Control-Allow-Origin", "https://rslgp.github.io"); // Replace with your domain
       xhr.onreadystatechange = function() {
