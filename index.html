@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Input Sender</title>
+  <script>
+    function sendInput() {
+      // Get user input from textarea
+      var userInput = document.getElementById("inputTextarea").value;
+      
+      // Split the input values by commas and trim each value
+      var inputArray = userInput.split(",").map(function(item) {
+        return item.trim();
+      });
+      
+      // Create JSON body with the input array
+      var requestBody = JSON.stringify({
+        dataArray: inputArray
+      });
+      
+      // Send GET request to AWS Lambda function
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "https://lfrhwwjy1c.execute-api.sa-east-1.amazonaws.com/default/zomboid-encrypt?data=" + encodeURIComponent(requestBody));
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            // Success! Display the encrypted data
+            var response = JSON.parse(xhr.responseText);
+            var encryptedData = response.encryptedData;
+            document.getElementById("resultDiv").innerText = "Encrypted Data: " + encryptedData;
+          } else {
+            // Error! Display the error message
+            document.getElementById("resultDiv").innerText = "Error: " + xhr.responseText;
+          }
+        }
+      };
+      xhr.send();
+    }
+  </script>
+</head>
+<body>
+  <h1>Input Sender</h1>
+  <p>Enter multiple values separated by commas:</p>
+  <textarea id="inputTextarea" rows="5" cols="40"></textarea><br>
+  <button onclick="sendInput()">Send</button>
+  <div id="resultDiv"></div>
+</body>
+</html>
