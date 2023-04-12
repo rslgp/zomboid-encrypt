@@ -1,47 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Input Sender</title>
-  <script>
-    function sendInput() {
-      // Get user input from textarea
-      var userInput = document.getElementById("inputTextarea").value;
-      
-      // Split the input values by commas and trim each value
-      var inputArray = userInput.split(",").map(function(item) {
-        return item.trim();
-      });
-      
-      // Create JSON body with the input array
-      var requestBody = JSON.stringify({
-        dataArray: inputArray
-      });
-      
-      // Send GET request to AWS Lambda function
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", "https://lfrhwwjy1c.execute-api.sa-east-1.amazonaws.com/default/zomboid-encrypt?data=" + encodeURIComponent(requestBody));
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-          if (xhr.status === 200) {
-            // Success! Display the encrypted data
-            var response = JSON.parse(xhr.responseText);
-            var encryptedData = response.encryptedData;
-            document.getElementById("resultDiv").innerText = "Encrypted Data: " + encryptedData;
-          } else {
-            // Error! Display the error message
-            document.getElementById("resultDiv").innerText = "Error: " + xhr.responseText;
-          }
+    <title>Send Data to AWS Lambda</title>
+    <script>
+        function sendData() {
+            // Get user input from text area
+            const userInput = document.getElementById("inputData").value;
+
+            // Convert user input to an array, splitting by comma
+            const dataArray = userInput.split(",");
+
+            // Create JSON object with dataArray as property
+            const data = {
+                dataArray: dataArray
+            };
+
+            // Convert data object to JSON string
+            const jsonData = JSON.stringify(data);
+
+            // Create XMLHttpRequest object
+            const xhr = new XMLHttpRequest();
+
+            // Configure request
+            xhr.open("POST", "https://lfrhwwjy1c.execute-api.sa-east-1.amazonaws.com/default/zomboid-encrypt", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+            // Send request with JSON data as body
+            xhr.send(jsonData);
+
+            // Handle response
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Request successful
+                        console.log("Request successful", xhr.responseText);
+                    } else {
+                        // Request failed
+                        console.error("Request failed", xhr.responseText);
+                    }
+                }
+            };
         }
-      };
-      xhr.send();
-    }
-  </script>
+    </script>
 </head>
 <body>
-  <h1>Input Sender</h1>
-  <p>Enter multiple values separated by commas:</p>
-  <textarea id="inputTextarea" rows="5" cols="40"></textarea><br>
-  <button onclick="sendInput()">Send</button>
-  <div id="resultDiv"></div>
+    <h1>Send Data to AWS Lambda</h1>
+    <textarea id="inputData" rows="5" cols="30"></textarea><br>
+    <button onclick="sendData()">Send Data</button>
 </body>
 </html>
